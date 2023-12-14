@@ -31,10 +31,34 @@ public class Solver {
 
     //DFS Method
     public static void DFSolver(State start, State goal) {
+//        Set<State> visited = new HashSet<>();
+//        Map<State, State> parentMap = new HashMap<>();
+//
+//        Helper.dfsHelper(start, goal, visited, parentMap);
+
+        Stack<State> stack = new Stack<>();
         Set<State> visited = new HashSet<>();
         Map<State, State> parentMap = new HashMap<>();
 
-        Helper.dfsHelper(start, goal, visited, parentMap);
+        stack.push(start);
+        visited.add(start);
+
+        while (!stack.isEmpty()) {
+            State current = stack.pop();
+
+            if (current.equals(goal)) {
+                printSolution(parentMap, current);
+                return;
+            }
+
+            for (State next : getValidMoves(current)) {
+                if (!visited.contains(next)) {
+                    stack.push(next);
+                    visited.add(next);
+                    parentMap.put(next, current);
+                }
+            }
+        }
 
     }
 
