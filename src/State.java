@@ -6,11 +6,11 @@ public class State
     int cannibals;
     boolean boat;
 
-        public State(int missionaries, int cannibals, boolean boat) {
-            this.missionaries = missionaries;
-            this.cannibals = cannibals;
-            this.boat = boat;
-        }
+    public State(int missionaries, int cannibals, boolean boat) {
+        this.missionaries = missionaries;
+        this.cannibals = cannibals;
+        this.boat = boat;
+    }
 
     //عشان يحسب قيمةال missionaries و cannibals , boat لما نستخدم hashmap
     public int hashCode() {

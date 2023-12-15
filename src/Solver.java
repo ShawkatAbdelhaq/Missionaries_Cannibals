@@ -15,7 +15,7 @@ public class Solver {
             State current = queue.poll();
 
             if (current.equals(goal)) {
-                printSolution(parentMap, current);
+                printSolution("BFS", parentMap, current);
                 return;
             }
 
@@ -29,13 +29,7 @@ public class Solver {
         }
     }
 
-    //DFS Method
     public static void DFSolver(State start, State goal) {
-//        Set<State> visited = new HashSet<>();
-//        Map<State, State> parentMap = new HashMap<>();
-//
-//        Helper.dfsHelper(start, goal, visited, parentMap);
-
         Stack<State> stack = new Stack<>();
         Set<State> visited = new HashSet<>();
         Map<State, State> parentMap = new HashMap<>();
@@ -47,7 +41,7 @@ public class Solver {
             State current = stack.pop();
 
             if (current.equals(goal)) {
-                printSolution(parentMap, current);
+                printSolution("DFS", parentMap, current);
                 return;
             }
 
@@ -59,7 +53,6 @@ public class Solver {
                 }
             }
         }
-
     }
 
     public static List<State> getValidMoves(State current) {
@@ -68,25 +61,24 @@ public class Solver {
         int mL = current.missionaries;
         int cL = current.cannibals;
 
-        // اذا كان القارب على اليسار
+        // القارب على الجهة اليسار
         if (current.boat) {
+            addValidMove(validMoves, new State(mL, cL - 2, false));
+            addValidMove(validMoves, new State(mL - 2, cL, false));
             addValidMove(validMoves, new State(mL - 1, cL, false));
             addValidMove(validMoves, new State(mL, cL - 1, false));
             addValidMove(validMoves, new State(mL - 1, cL - 1, false));
-            addValidMove(validMoves, new State(mL - 2, cL, false));
-            addValidMove(validMoves, new State(mL, cL - 2, false));
-            //اذا كان القارب على اليمين
         } else {
+            // القارب على الجهة اليمين
+            addValidMove(validMoves, new State(mL, cL + 2, true));
+            addValidMove(validMoves, new State(mL + 2, cL, true));
             addValidMove(validMoves, new State(mL + 1, cL, true));
             addValidMove(validMoves, new State(mL, cL + 1, true));
             addValidMove(validMoves, new State(mL + 1, cL + 1, true));
-            addValidMove(validMoves, new State(mL + 2, cL, true));
-            addValidMove(validMoves, new State(mL, cL + 2, true));
         }
 
         return validMoves;
     }
-
 
     private static void addValidMove(List<State> moves, State nextState) {
         if (isValid(nextState)) {
@@ -102,7 +94,8 @@ public class Solver {
                 (mL == 0 || mL >= cL) && (3 - mL == 0 || (3 - mL) >= (3 - cL)));
     }
 
-    public static void printSolution(Map<State, State> parentMap, State current) {
+    //بارميتر ال algorithm بتخزن فيه اسم ال dfs or bfs
+    public static void printSolution(String algorithm, Map<State, State> parentMap, State current) {
         List<State> path = new ArrayList<>();
 
         while (current != null) {
@@ -112,11 +105,11 @@ public class Solver {
 
         Collections.reverse(path);
 
-        System.out.println(path.size() + " steps:");
+        System.out.println("Solution using " + algorithm + ": " + (path.size()) + " steps:");
 
         for (int i = 0; i < path.size(); i++) {
             State state = path.get(i);
-            System.out.println("Step " + i + ": (" +
+            System.out.println("Step " + (i + 1) + ": (" +
                     state.missionaries + ", " + state.cannibals + ", " +
                     (state.boat ? "1" : "0") + ", " +
                     (3 - state.missionaries) + ", " + (3 - state.cannibals) + ")");
